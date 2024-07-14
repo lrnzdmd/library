@@ -16,30 +16,41 @@
             <form action="search" method="post"><input type="text" name="search" id="search"></form>
         </div>
         <dialog id="addbookdialog">
-            <form action="addbook" method="dialog">
+            <form action="addbook" method="dialog" id="bookform">
                 <div class="formfield">
                 <label for="title">Title</label>
-                <input type="text" name="title" id="title">
+                <input type="text" name="title" id="title" required>
                 </div>
                 <div class="formfield">
                 <label for="author">Author</label>
-                <input type="text" name="author" id="author">
+                <input type="text" name="author" id="author" required>
                 </div>
                 <div class="formfield">
                 <label for="pages">Pages</label>
-                <input type="number" name="pages" id="pages">
+                <input type="number" name="pages" id="pages" min="0" step="1" required>
                 </div>
                 <div class="formfield">
                 <label for="read">Read</label>
-                <input type="checkbox" name="read" id="read">
+                <input type="checkbox" name="isread" id="isread">
                 </div>
                 <div class="buttons">
                     <button type="button" id="cancelbutton">Cancel</button>
-                    <button type="button" id="submitbutton">Add Book</button>
+                    <button type="submit" id="submitbutton">Add Book</button>
                 </div>
             </form>
-            
         </dialog>
+    </div>
+    <div class="content">
+        <div class="bookcard">
+            <p>TITLE</p>
+            <div class="title">Hobbit</div>
+            <p>AUTHOR</p>
+            <div class="author">Tolkien</div>
+            <p>PAGES N°</p>
+            <div class="pages">350</div>
+            <button type="button" class="readbutton">Read</button>
+            <button type="button" class="removebutton">Remove</button>
+        </div>
     </div>
 </body>
 </html>
