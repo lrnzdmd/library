@@ -40,7 +40,8 @@
             </form>
         </dialog>
     </div>
-    <div class="content">
+    <div class="content" id="cardgrid">
+    <template id="cardtemplate">
         <div class="bookcard">
             <p>TITLE</p>
             <div class="title">Hobbit</div>
@@ -51,6 +52,14 @@
             <button type="button" class="readbutton">Read</button>
             <button type="button" class="removebutton">Remove</button>
         </div>
+    </template>
     </div>
+    <dialog id="removedialog">
+        <h3>Do you really want to remove this book from your library?</h3>
+        <div class="buttons">
+            <button type="button" id="cancelbutton">Cancel</button>
+            <button type="button" id="confirmbutton">Remove Book</button>
+        </div>
+    </dialog>
 </body>
 </html>
