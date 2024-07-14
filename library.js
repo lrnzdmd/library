@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
         const formData = new FormData(bookForm);
         const data = Object.fromEntries(formData.entries());
-        data.isRead = formData.has("isread");
+        data.isread = formData.has("isread");
         const dialog = event.target.closest("dialog");
         const newBook = new Book(data.title, data.author, data.pages, data.isRead)
         addBookToLibrary(myLibrary, newBook);
@@ -42,14 +42,23 @@ function addBookToLibrary(library, book) {
 
 function addBookCard(book, index) {
     const newCard = cardTemplate.content.cloneNode(true);
-    newCard.querySelector('.title').textContent = book.title;
-    newCard.querySelector('.author').textContent = `Author: ${book.author}`;
-    newCard.querySelector('.pages').textContent = `Pages: ${book.pages}`;
-    newCard.querySelector('.readbutton').textContent = book.isRead ? 'Read: Yes' : 'Read: No';
-    newCard.querySelector('.bookcard').setAttribute('id', `${index}`);
+    newCard.querySelector(".title").textContent = book.title;
+    newCard.querySelector(".author").textContent = `Author: ${book.author}`;
+    newCard.querySelector(".pages").textContent = `Pages: ${book.pages}`;
+    newCard.querySelector(".readbutton").textContent = book.isRead ? "Read: Yes" : "Read: No";
+    newCard.querySelector(".bookcard").setAttribute("id", `${index}`);
+    newCard.querySelector(".readbutton").addEventListener("click" , function(event){
+        toggleRead(event);
+    });
     cardGrid.appendChild(newCard);
     console.log("just added book index " + index);
 }
+
+function toggleRead(event) {
+    const book = myLibrary[event.target.closest(".bookcard").id];
+    book.readSwitch();
+    if (book.read) {event.target.textContent = "Read: Yes";} else {event.target.textContent = "Read: No";}
+    
 
 function Book(title, author, pages, read) {
     this.title = title;
