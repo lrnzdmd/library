@@ -15,6 +15,31 @@
             <div class="searchbutton"><img src="./images/search.svg" alt="search"></div> 
             <form action="search" method="post"><input type="text" name="search" id="search"></form>
         </div>
+        <dialog id="addbookdialog">
+            <form action="addbook" method="dialog">
+                <div class="formfield">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title">
+                </div>
+                <div class="formfield">
+                <label for="author">Author</label>
+                <input type="text" name="author" id="author">
+                </div>
+                <div class="formfield">
+                <label for="pages">Pages</label>
+                <input type="number" name="pages" id="pages">
+                </div>
+                <div class="formfield">
+                <label for="read">Read</label>
+                <input type="checkbox" name="read" id="read">
+                </div>
+                <div class="buttons">
+                    <button type="button" id="cancelbutton">Cancel</button>
+                    <button type="button" id="submitbutton">Add Book</button>
+                </div>
+            </form>
+            
+        </dialog>
     </div>
 </body>
 </html>
