@@ -28,17 +28,23 @@ function refreshCards(library) {
     cleanLibraryEvents();
     cardGrid.innerHTML = "";
 
-    for (let i = 0; i < library.length; i++) {
-        const newCard = cardTemplate.content.cloneNode(true);
-        newCard.querySelector(".title").textContent = library[i].title;
-        newCard.querySelector(".author").textContent = library[i].author;
-        newCard.querySelector(".pages").textContent = library[i].pages;
-        newCard.querySelector(".readbutton").textContent = library[i].read ? "Read: Yes" : "Read: No";
-        newCard.querySelector(".bookcard").setAttribute("id", `${i}`);
-        newCard.querySelector(".readbutton").addEventListener("click", toggleRead);
-        addRemoveButtonEventListener(newCard.querySelector(".removebutton"), library[i].title);
+    library.forEach((book, index) => {
+        const newCard = createCard(book, index);
         cardGrid.appendChild(newCard);         
-    }
+    });
+}
+
+function createCard(book, index) {
+
+    const newCard = cardTemplate.content.cloneNode(true);
+    newCard.querySelector(".title").textContent = book.title;
+    newCard.querySelector(".author").textContent = book.author;
+    newCard.querySelector(".pages").textContent = book.pages;
+    newCard.querySelector(".readbutton").textContent = book.read ? "Read: Yes" : "Read: No";
+    newCard.querySelector(".bookcard").setAttribute("id", `${index}`);
+    newCard.querySelector(".readbutton").addEventListener("click", toggleRead);
+    addRemoveButtonEventListener(newCard.querySelector(".removebutton"), book.title);
+    return newCard;
 }
 
 // Not sure this part is needed.
