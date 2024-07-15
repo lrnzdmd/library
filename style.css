@@ -95,15 +95,15 @@ html, body {
 
 #isread:checked::after {
     content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0.5rem;
-            height: 0.5rem;
-            background-color: #20A4F3;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-        }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #20A4F3;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
 
 .formfield {
     display: flex;
@@ -133,7 +133,7 @@ html, body {
 
 .content {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     grid-auto-rows: minmax(225px, 1fr);
     justify-content: center;
     padding:1rem;
