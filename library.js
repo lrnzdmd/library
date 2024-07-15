@@ -1,6 +1,7 @@
+//Create the library array
 const myLibrary = [];
 
-
+//Variables for all the elements needed 
 const addDialog = document.getElementById("addbookdialog");
 const removeDialog = document.querySelector(".removedialog");
 const addButton = document.getElementById("addbookbutton");
@@ -15,10 +16,7 @@ addButton.addEventListener("click", function () {
 });
 
 dialogCloseBtn.forEach(function (btn) {
-    btn.addEventListener("click", function (event) {
-        const dialog = event.target.closest("dialog");
-        dialog.close();
-    });
+    btn.addEventListener("click", closeDialog);
 });
 
 
@@ -35,9 +33,7 @@ bookForm.addEventListener("submit", function (event) {
     dialog.close();
 });
 
-removeConfirmBtn.addEventListener("click", function (event) {
-    removeCard(event);
-});
+removeConfirmBtn.addEventListener("click", removeCard);
 
 
 
@@ -48,6 +44,8 @@ function addBookToLibrary(library, book) {
 }
 
 function refreshCards(library) {
+
+    cleanLibraryEvents();
     cardGrid.innerHTML = "";
     for (let i = 0; i < library.length; i++) {
         const newCard = cardTemplate.content.cloneNode(true);
@@ -56,9 +54,7 @@ function refreshCards(library) {
         newCard.querySelector(".pages").textContent = library[i].pages;
         newCard.querySelector(".readbutton").textContent = library[i].read ? "Read: Yes" : "Read: No";
         newCard.querySelector(".bookcard").setAttribute("id", `${i}`);
-        newCard.querySelector(".readbutton").addEventListener("click", function (event) {
-            toggleRead(event);
-        });
+        newCard.querySelector(".readbutton").addEventListener("click", toggleRead);
         newCard.querySelector(".removebutton").addEventListener("click", function (event) {
             removeDialog.id = i;
             removeDialog.showModal();
@@ -66,6 +62,22 @@ function refreshCards(library) {
         cardGrid.appendChild(newCard);
     }
 }
+function cleanLibraryEvents() {
+    rdbuttons = cardGrid.querySelectorAll(".readbutton");
+    rmbuttons = cardGrid.querySelectorAll(".removebutton");
+    rdbuttons.forEach(function (btn) {
+        btn.removeEventListener("click", toggleRead);
+    });
+    rmbuttons.forEach(function (btn) {
+        btn.removeEventListener("click", function (event) {
+            removeDialog.id = i;
+            removeDialog.showModal();
+        });
+});
+}
+
+
+
 
 function toggleRead(event) {
     const book = myLibrary[event.target.closest(".bookcard").id];
@@ -99,4 +111,8 @@ function Book(title, author, pages, read) {
     }
 }
 
+function closeDialog(event) {
+    const dialog = event.target.closest("dialog");
+    dialog.close();
+}
 
