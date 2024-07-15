@@ -22,7 +22,7 @@ function addBookToLibrary(library, book) {
     library.push(book);
 }
 
-// Called to refresh the DOM with the books in the library
+// Called to refresh the DOM with the books in the library.
 function refreshCards(library) {
 
     cleanLibraryEvents();
@@ -40,6 +40,8 @@ function refreshCards(library) {
         cardGrid.appendChild(newCard);         
     }
 }
+
+// Not sure this part is needed.
 function cleanLibraryEvents() {
     rdbuttons = cardGrid.querySelectorAll(".readbutton");
     rmbuttons = cardGrid.querySelectorAll(".removebutton");
@@ -47,8 +49,8 @@ function cleanLibraryEvents() {
         btn.removeEventListener("click", toggleRead);
     });
     rmbuttons.forEach(function (btn) {
-        btn.removeEventListener("click", function (event) {
-            removeDialog.id = i;
+        btn.removeEventListener("click", function () {
+            removeDialog.querySelector("b").textContent = bookName;
             removeDialog.showModal();
         });
 });
@@ -83,10 +85,10 @@ function readForm(event) {
 
 // Toggles the read status, used by the book cards read button
 function toggleRead(event) {
-    const book = myLibrary[event.target.closest(".bookcard").id];
+    const btn = event.target;
+    const book = myLibrary[btn.closest(".bookcard").id];
     book.readSwitch();
-    if (book.read) { event.target.textContent = "Read: Yes"; }
-    else { event.target.textContent = "Read: No"; }
+    btn.textContent = book.read ? "Read: Yes" : "Read: No";
 }
 
 function removeBook(event) {
@@ -103,16 +105,7 @@ function Book(title, author, pages, read) {
     this.author = author;
     this.pages = pages;
     this.read = read;
-    this.info = function () {
-        if (this.read === false) {
-            return this.title + " by " + this.author + ", " + this.pages + " pages, not read yet";
-        } else {
-            return this.title + " by " + this.author + ", " + this.pages + " pages, read";
-        }
-    }
-    this.readSwitch = function () {
-        this.read = !this.read;
-    }
+    this.readSwitch = () => this.read = !this.read;
 }
 
 // Closes the closest dialog window, called by every cancel button in a modal
