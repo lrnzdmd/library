@@ -1,5 +1,5 @@
 // Create the library array
-let myLibrary = [];
+const myLibrary = [];
 
 // Variables for all the elements needed 
 const addDialog = document.getElementById("addbookdialog");
@@ -22,7 +22,7 @@ function addBookToLibrary(library, book) {
     library.push(book);
 }
 
-//Called to refresh the DOM with the books in the library
+// Called to refresh the DOM with the books in the library
 function refreshCards(library) {
 
     cleanLibraryEvents();
@@ -90,8 +90,9 @@ function toggleRead(event) {
 }
 
 function removeBook(event) {
-    let name = event.target.closest("dialog").querySelector("b").textContent
-    myLibrary = myLibrary.filter(book => book.title !== name);
+    let title = event.target.closest("dialog").querySelector("b").textContent
+    const index = myLibrary.findIndex(book => book.title === title);
+    myLibrary.splice(index, 1);
     refreshCards(myLibrary);
     closeDialog(event);
 
