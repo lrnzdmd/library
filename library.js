@@ -1,11 +1,14 @@
 const myLibrary = [];
 let cardGrid;
 let cardTemplate;
+let removeDialog
 
 document.addEventListener("DOMContentLoaded", function() {
     const addDialog = document.getElementById("addbookdialog");
+    removeDialog = document.querySelector(".removedialog");
     const addButton = document.getElementById("addbookbutton");
-    const dialogCloseBtn = document.getElementById("cancelbutton");
+    const dialogCloseBtn = document.querySelectorAll(".cancelbutton");
+    const removeConfirmBtn = document.getElementById("confirmbutton");
     const bookForm = document.getElementById("bookform");
     cardGrid = document.getElementById("cardgrid");
     cardTemplate = document.getElementById("cardtemplate");
@@ -13,24 +16,30 @@ document.addEventListener("DOMContentLoaded", function() {
     addButton.addEventListener("click", function(){
         addDialog.showModal();
     });
-
-    dialogCloseBtn.addEventListener("click", function(event){
-        const dialog = event.target.closest("dialog");
-        dialog.close();
-    });
     
-    // Creates a new book from the form data when submitted
+    dialogCloseBtn.forEach(function(btn) {
+        btn.addEventListener("click", function(event) {
+            const dialog = event.target.closest("dialog");
+            dialog.close();
+        });
+    });
+
+    
     bookForm.addEventListener("submit", function(event){
         event.preventDefault();
         const formData = new FormData(bookForm);
         const data = Object.fromEntries(formData.entries());
         data.isread = formData.has("isread");
         const dialog = event.target.closest("dialog");
-        const newBook = new Book(data.title, data.author, data.pages, data.isRead)
+        const newBook = new Book(data.title, data.author, data.pages, data.isread)
         addBookToLibrary(myLibrary, newBook);
-        addBookCard(newBook, myLibrary.length-1);
+        refreshCards(myLibrary);
         bookForm.reset();
         dialog.close();
+    });
+
+    removeConfirmBtn.addEventListener("click", function(event){
+        removeCard(event);
     });
 
 
@@ -38,27 +47,43 @@ document.addEventListener("DOMContentLoaded", function() {
 
 function addBookToLibrary(library, book) {
     library.push(book);
+    
 }
 
-function addBookCard(book, index) {
+function refreshCards(library) {
+    cardGrid.innerHTML = "";
+    for (let i = 0; i < library.length; i++){
     const newCard = cardTemplate.content.cloneNode(true);
-    newCard.querySelector(".title").textContent = book.title;
-    newCard.querySelector(".author").textContent = `Author: ${book.author}`;
-    newCard.querySelector(".pages").textContent = `Pages: ${book.pages}`;
-    newCard.querySelector(".readbutton").textContent = book.isRead ? "Read: Yes" : "Read: No";
-    newCard.querySelector(".bookcard").setAttribute("id", `${index}`);
+    newCard.querySelector(".title").textContent = library[i].title;
+    newCard.querySelector(".author").textContent = library[i].author;
+    newCard.querySelector(".pages").textContent = library[i].pages;
+    newCard.querySelector(".readbutton").textContent = library[i].read ? "Read: Yes" : "Read: No";
+    newCard.querySelector(".bookcard").setAttribute("id", `${i}`);
     newCard.querySelector(".readbutton").addEventListener("click" , function(event){
         toggleRead(event);
     });
+    newCard.querySelector(".removebutton").addEventListener("click", function(event){
+        removeDialog.id = i;
+        removeDialog.showModal();
+    });
     cardGrid.appendChild(newCard);
-    console.log("just added book index " + index);
+}
 }
 
 function toggleRead(event) {
     const book = myLibrary[event.target.closest(".bookcard").id];
     book.readSwitch();
-    if (book.read) {event.target.textContent = "Read: Yes";} else {event.target.textContent = "Read: No";}
-    
+    if (book.read) {event.target.textContent = "Read: Yes";}
+     else {event.target.textContent = "Read: No";}
+}
+
+function removeCard(event) {
+    const dialog = event.target.closest("dialog");
+    myLibrary.splice(event.target.closest("dialog").id, 1);
+    refreshCards(myLibrary);
+    dialog.close();
+
+}
 
 function Book(title, author, pages, read) {
     this.title = title;

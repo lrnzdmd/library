@@ -61,7 +61,7 @@ html, body {
     box-shadow: 0 1px 6px #000000b4;
 }
 
-#addbookdialog {
+#addbookdialog, .removedialog {
     border-radius: 2rem;
     border:none;
     box-shadow: 0 1px 6px #000000b4;
