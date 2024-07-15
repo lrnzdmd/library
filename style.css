@@ -1,15 +1,15 @@
+* {color:#EAE8FF;}
 html, body {
     margin:0;
     padding:0;
     box-sizing: border-box;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color:floralwhite;
+    background-color:#20A4F3;
 }
 
 
 .header {
-    color: white;
-    background-color:dodgerblue;
+    background-color:#5FAD56;
     height: 20vh;
     box-shadow: 0 1px 6px #000000b4;
     display: flex;
@@ -20,11 +20,10 @@ html, body {
 }
 
 .header > button {
-    color:white;
     font-weight: 600;
     border-radius: 5rem;
     border: none;
-    background-color:rgb(84, 169, 253);
+    background-color:#FE5F00;
     padding: 0.5rem 1.2rem 0.5rem 1.2rem;
     box-shadow: 0 1px 6px #000000b4;
 }
@@ -45,7 +44,7 @@ html, body {
 .searchbar form input {
     border: none;
     border-radius: 5rem;
-    background-color: lightgray;
+    background-color: #FE5F00;
     padding: 0.5rem;
     box-shadow: 0 1px 6px #000000b4;
 }
@@ -54,7 +53,7 @@ html, body {
     display: flex;
     align-self: center;
     justify-content: center;
-    background-color:rgb(84, 169, 253);
+    background-color:#FE5F00;
     border-radius: 50%;
     width: 2rem;
     height: 2rem;
@@ -62,6 +61,7 @@ html, body {
 }
 
 #addbookdialog, .removedialog {
+    background-color: #5FAD56;
     border-radius: 2rem;
     border:none;
     box-shadow: 0 1px 6px #000000b4;
@@ -74,6 +74,36 @@ html, body {
     gap: 1rem;
     padding: 1.5rem;
 }
+
+#addbookdialog form input {
+    border:none;
+    border-radius: 10px;
+    background-color: #FE5F00;
+    box-shadow: 0 1px 6px #000000b4;
+}
+
+#isread {
+    appearance: none;
+    width:1rem;
+    height:1rem;
+    background-color: #FE5F00;
+    position:relative;
+    box-shadow: 0 1px 6px #000000b4;
+}
+
+
+
+#isread:checked::after {
+    content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: #20A4F3;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
 
 .formfield {
     display: flex;
@@ -93,11 +123,10 @@ html, body {
 }
 
 .buttons > button {
-    color:white;
     font-weight: 600;
     border-radius: 5rem;
     border: none;
-    background-color:rgb(84, 169, 253);
+    background-color:#FE5F00;
     padding: 0.5rem 1.2rem 0.5rem 1.2rem;
     box-shadow: 0 1px 6px #000000b4;
 }
@@ -112,10 +141,10 @@ html, body {
 }
 
 .bookcard {
-    background-color:mintcream;
+    background-color:#5FAD56;
     padding: 1rem 0.5rem 1rem 0.5rem;
     border-radius: 10px;
-    border-left: 20px solid chocolate;
+    border-left: 20px solid #FE5F00;
     box-shadow: 0 1px 6px #000000b4;
     display:flex;
     flex-direction: column;
@@ -126,10 +155,9 @@ html, body {
 }
 .bookcard button {
     align-self: center;
-    color:white;
     border-radius: 5rem;
     border: none;
-    background-color:rgb(84, 169, 253);
+    background-color:#FE5F00;
     margin:0.2rem;
     width:6rem;
     height: 1.5rem;
