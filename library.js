@@ -1,5 +1,5 @@
 // Create the library array
-const myLibrary = [];
+let myLibrary = [];
 
 // Variables for all the elements needed 
 const addDialog = document.getElementById("addbookdialog");
@@ -36,7 +36,7 @@ function refreshCards(library) {
         newCard.querySelector(".readbutton").textContent = library[i].read ? "Read: Yes" : "Read: No";
         newCard.querySelector(".bookcard").setAttribute("id", `${i}`);
         newCard.querySelector(".readbutton").addEventListener("click", toggleRead);
-        addRemoveButtonEventListener(newCard.querySelector(".removebutton"), i);
+        addRemoveButtonEventListener(newCard.querySelector(".removebutton"), library[i].title);
         cardGrid.appendChild(newCard);         
     }
 }
@@ -56,11 +56,12 @@ function cleanLibraryEvents() {
 
 
 // Adds event listeners to each cards remove button to open the confirm dialog
-// and passes the index of the book in the array to the modal windows's id because
-// i am dumb and couldnt find a better way to delete the right book :(
-function addRemoveButtonEventListener(button, index) {
+// and writes the name of the book inside the html of the dialog so i can get it back
+// when i have to delete the book, still don't know if this solution is good
+// but it feels better than the one before.
+function addRemoveButtonEventListener(button, bookName) {
     button.addEventListener("click", function (){
-        removeDialog.id = index;
+        removeDialog.querySelector("b").textContent = bookName;
         removeDialog.showModal();
     })
 
@@ -89,10 +90,10 @@ function toggleRead(event) {
 }
 
 function removeBook(event) {
-    const dialog = event.target.closest("dialog");
-    myLibrary.splice(event.target.closest("dialog").id, 1);
+    let name = event.target.closest("dialog").querySelector("b").textContent
+    myLibrary = myLibrary.filter(book => book.title !== name);
     refreshCards(myLibrary);
-    dialog.close();
+    closeDialog(event);
 
 }
 
