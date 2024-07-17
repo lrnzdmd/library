@@ -8,7 +8,7 @@ class Library {
     // Will be used at the beginning to create all the listeners on the page minus the ones that will be created with the cards
 
     createListeners() {
-      this.DisplayManager.addButton.addEventListener("click", () => addDialog.showModal());
+      this.DisplayManager.addButton.addEventListener("click", () => this.DisplayManager.addDialog.showModal());
       this.DisplayManager.dialogCloseBtn.forEach(btn => btn.addEventListener("click", this.closeDialog));
       this.DisplayManager.bookForm.addEventListener("submit", this.addBook)
       //this.DisplayManager.removeConfirmBtn.addEventListener("click", removeBook)
