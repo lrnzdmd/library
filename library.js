@@ -3,6 +3,8 @@ class Library {
     constructor() {
       this.collection = [];
       this.DisplayManager = new DisplayManager();
+      this.addBook = this.addBook.bind(this);
+      this.closeDialog = this.closeDialog.bind(this);
     }
     
     // Will be used at the beginning to create all the listeners on the page minus the ones that will be created with the cards
@@ -22,7 +24,7 @@ class Library {
       const newBook = new Book(book.title, book.author, book.pages, book.isread);
       this.DisplayManager.bookForm.reset();
       this.collection.push(newBook);
-      this.closeDialog();
+      this.closeDialog(event);
     }
     
     // removes the book, still have to change it from console only to the ui,
