@@ -37,7 +37,7 @@ function refreshCards(library) {
 function createCard(book, index) {
 
     const newCard = cardTemplate.content.cloneNode(true);
-    newCard.querySelector(".title").textContent = book.title;
+    newCard.querySelector(".title").textContent = book.title
     newCard.querySelector(".author").textContent = book.author;
     newCard.querySelector(".pages").textContent = book.pages;
     newCard.querySelector(".readbutton").textContent = book.read ? "Read: Yes" : "Read: No";
@@ -105,13 +105,15 @@ function removeBook(event) {
     closeDialog(event);
 
 }
-
-function Book(title, author, pages, read) {
+class Book {
+    constructor(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
-    this.readSwitch = () => this.read = !this.read;
+    }
+
+    readSwitch() { this.read = !this.read; }
 }
 
 // Closes the closest dialog window, called by every cancel button in a modal
