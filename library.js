@@ -1,124 +1,80 @@
-// Create the library array
-const myLibrary = [];
 
-// Variables for all the elements needed 
-const addDialog = document.getElementById("addbookdialog");
-const removeDialog = document.querySelector(".removedialog");
-const addButton = document.getElementById("addbookbutton");
-const dialogCloseBtn = document.querySelectorAll(".cancelbutton");
-const removeConfirmBtn = document.getElementById("confirmbutton");
-const bookForm = document.getElementById("bookform");
-const cardGrid = document.getElementById("cardgrid");
-const cardTemplate = document.getElementById("cardtemplate");
-
-// Listener on the add book button, all the dialog close and on the remove confirmation button inside the modal 
-addButton.addEventListener("click", () => addDialog.showModal());
-dialogCloseBtn.forEach(btn => btn.addEventListener("click", closeDialog));
-bookForm.addEventListener("submit", readForm);
-removeConfirmBtn.addEventListener("click", removeBook);
-
-
-function addBookToLibrary(library, book) {
-    library.push(book);
-}
-
-// Called to refresh the DOM with the books in the library.
-function refreshCards(library) {
-
-    cleanLibraryEvents();
-    cardGrid.innerHTML = "";
-
-    library.forEach((book, index) => {
-        const newCard = createCard(book, index);
-        cardGrid.appendChild(newCard);         
-    });
-}
-
-function createCard(book, index) {
-
-    const newCard = cardTemplate.content.cloneNode(true);
-    newCard.querySelector(".title").textContent = book.title
-    newCard.querySelector(".author").textContent = book.author;
-    newCard.querySelector(".pages").textContent = book.pages;
-    newCard.querySelector(".readbutton").textContent = book.read ? "Read: Yes" : "Read: No";
-    newCard.querySelector(".bookcard").setAttribute("id", `${index}`);
-    newCard.querySelector(".readbutton").addEventListener("click", toggleRead);
-    addRemoveButtonEventListener(newCard.querySelector(".removebutton"), book.title);
-    return newCard;
-}
-
-// Not sure this part is needed.
-function cleanLibraryEvents() {
-    rdbuttons = cardGrid.querySelectorAll(".readbutton");
-    rmbuttons = cardGrid.querySelectorAll(".removebutton");
-    rdbuttons.forEach(function (btn) {
-        btn.removeEventListener("click", toggleRead);
-    });
-    rmbuttons.forEach(function (btn) {
-        btn.removeEventListener("click", function () {
-            removeDialog.querySelector("b").textContent = bookName;
-            removeDialog.showModal();
-        });
-});
-}
-
-
-// Adds event listeners to each cards remove button to open the confirm dialog
-// and writes the name of the book inside the html of the dialog so i can get it back
-// when i have to delete the book, still don't know if this solution is good
-// but it feels better than the one before.
-function addRemoveButtonEventListener(button, bookName) {
-    button.addEventListener("click", function (){
-        removeDialog.querySelector("b").textContent = bookName;
-        removeDialog.showModal();
-    })
-
-}
-
-
-function readForm(event) {
-    event.preventDefault();
-    const formData = new FormData(bookForm);
-    const data = Object.fromEntries(formData.entries());
-    data.isread = formData.has("isread");
-    const newBook = new Book(data.title, data.author, data.pages, data.isread)
-    addBookToLibrary(myLibrary, newBook);
-    refreshCards(myLibrary);
-    bookForm.reset();
-    closeDialog(event);
+class Library {
+    constructor() {
+      this.collection = [];
+      this.DisplayManager = new DisplayManager();
+    }
     
-}
+    // Will be used at the beginning to create all the listeners on the page minus the ones that will be created with the cards
 
-// Toggles the read status, used by the book cards read button
-function toggleRead(event) {
-    const btn = event.target;
-    const book = myLibrary[btn.closest(".bookcard").id];
-    book.readSwitch();
-    btn.textContent = book.read ? "Read: Yes" : "Read: No";
-}
-
-function removeBook(event) {
-    let title = event.target.closest("dialog").querySelector("b").textContent
-    const index = myLibrary.findIndex(book => book.title === title);
-    myLibrary.splice(index, 1);
-    refreshCards(myLibrary);
-    closeDialog(event);
-
-}
-class Book {
-    constructor(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
+    createListeners() {
+      this.DisplayManager.addButton.addEventListener("click", () => addDialog.showModal());
+      this.DisplayManager.dialogCloseBtn.forEach(btn => btn.addEventListener("click", this.closeDialog));
+      this.DisplayManager.bookForm.addEventListener("submit", this.addBook)
+      //this.DisplayManager.removeConfirmBtn.addEventListener("click", removeBook)
     }
 
-    readSwitch() { this.read = !this.read; }
-}
+    addBook(event) {
+      event.preventDefault();
+      const formData = new FormData(this.DisplayManager.bookForm);
+      const book = Object.fromEntries(formData.entries());
+      book.isread = formData.has("isread");
+      const newBook = new Book(book.title, book.author, book.pages, book.isread);
+      this.DisplayManager.bookForm.reset();
+      this.collection.push(newBook);
+      this.closeDialog();
+    }
+    
+    // removes the book, still have to change it from console only to the ui,
+    // maybe i will change how this whole thing work
 
-// Closes the closest dialog window, called by every cancel button in a modal
-function closeDialog(event) {
-    const dialog = event.target.closest("dialog");
-    dialog.close();
-}
+    removeBook() {
+      let name = prompt("enter title of book to remove (case sensitve)");
+      const index = this.collection.findIndex((bk) => bk.name === name);
+      this.collection.splice(index, 1);
+    }
+  
+    printCollection() {
+      console.log(this.collection);
+    }
+  
+    closeDialog(event) {
+      const dialog = event.target.closest("dialog");
+      dialog.close();
+  }
+  }
+  
+  // all the references to dom elements i might need are bundled up in here
+  // (except those that will get created on the fly)
 
+  class DisplayManager {
+      constructor() {
+          this.addDialog = document.getElementById("addbookdialog");
+          this.addButton = document.getElementById("addbookbutton");
+          this.removeDialog = document.querySelector(".removedialog");
+          this.removeConfirmBtn = document.getElementById("confirmbutton");
+          this.dialogCloseBtn = document.querySelectorAll(".cancelbutton");
+          this.cardGrid = document.getElementById("cardgrid");
+          this.bookForm = document.getElementById("bookform");
+          this.cardTemplate = document.getElementById("cardtemplate");
+      }
+  }
+  
+  class Book {
+    constructor(title, author, pages, read) {
+      this.title = title;
+      this.author = author;
+      this.pages = pages;
+      this.read = read;
+    }
+  
+    readSwitch() {
+      this.read = !this.read;
+    }
+  }
+
+  const myLibrary = new Library();
+  myLibrary.createListeners();
+  
+  
+  
